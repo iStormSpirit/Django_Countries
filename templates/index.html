@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{{ page_name }}
+{% block content %}
+
+<br>
+<h1>Добро пожаловать в <br>
+    DjangoCountries</h1>
+<br>
+
+<!--<div class="btn-group-vertical" role="group">-->
+<button type="button" class="btn "><a href="{% url 'countries-list' %}">Список всех стран</a></button>
+<button type="button" class="btn "><a href="{% url 'languages-list' %}">Список всех языков</a></button>
+<!--</div>-->
+{% include 'inc/inc-footer.html' %}
+{% endblock %}
+
+<div class="container">
+    <div class="row">
+        <div class="col text-center">
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ page_name }} {{ letter | default:""}}
+{% endblock %}
+
+{% block content %}
+<h1>Список всех стран </h1>
+<h5>Список всех стран по букве {{ letter | default:""}}</h5>
+<!--Блок славаря-->
+{% for letter in alphabet %}
+<!--Гиперсылки букв словаря-->
+<button type="button" class="btn btn-outline-warning">
+    <a href="?letter={{ letter }}">{{ letter }}</a></button>
+{% endfor %}
+
+<!--Блок кнопок нафигации-->
+<br>
+<button type="button" class="btn ">
+    <a href="{% url 'countries-list' %}">Список всех стран</a></button>
+<button type="button" class="btn ">
+    <a href="{% url 'home' %}">Home</a></button>
+<button type="button" class="btn ">
+    <a href="{% url 'languages-list' %}">Список всех языков</a></button>
+
+<ol><br>
+    <!--    Блок наполнения и отображения стран из словаря с пагинацией-->
+    <!--    views.py COUNTRIES_ON_PAGE = 10-->
+    {% for country_name in page_countries %}
+    <!--    Гиперсылки стран-->
+    <li>
+        <button type="button" class="btn btn-light">
+            <a href="/country/{{ country_name }}">{{ country_name }}</a></button>
+    </li>
+    {% endfor %}
+</ol>
+
+<h5><em> Всего: {{ total }} </em></h5>
+
+{% if letter %}
+
+<div class="d-inline-flex p-2 bd-highlight">
+    <div class="pagination">
+        <!--Блок пагинации при фильтрации по букве letter countries-list/?page=2&letter=B-->
+        <span class="step-links">
+        {% if page_countries.has_previous %}
+            <button type="button" class="btn "><a href="?page=1&letter={{ letter }}">&laquo; first</a></button>
+            <button type="button" class="btn "><a
+                    href="?page={{ page_countries.previous_page_number }}&letter={{ letter }}">previous</a></button>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_countries.number }} of {{ page_countries.paginator.num_pages }}
+        </span>
+
+        {% if page_countries.has_next %}
+            <button type="button" class="btn "><a
+                    href="?page={{ page_countries.next_page_number }}&letter={{ letter }}">next</a></button>
+            <button type="button" class="btn "><a
+                    href="?page={{ page_countries.paginator.num_pages }}&letter={{ letter }}">last &raquo;</a></button>
+        {% endif %}
+    </span>
+    </div>
+</div>
+
+{% else %}
+
+<div class="d-inline-flex p-2 bd-highlight">
+    <div class="pagination">
+        <!--Блок пагинации countries-list/?page=2-->
+        <span class="step-links">
+        {% if page_countries.has_previous %}
+            <button type="button" class="btn "><a href="?page=1">&laquo; first</a></button>
+            <button type="button" class="btn "><a
+                    href="?page={{ page_countries.previous_page_number }}">previous</a></button>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_countries.number }} of {{ page_countries.paginator.num_pages }}
+        </span>
+
+        {% if page_countries.has_next %}
+            <button type="button" class="btn "><a href="?page={{ page_countries.next_page_number }}">next</a></button>
+            <button type="button" class="btn "><a href="?page={{ page_countries.paginator.num_pages }}">last &raquo;</a></button>
+        {% endif %}
+    </span>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
